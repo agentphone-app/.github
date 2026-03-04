@@ -31,7 +31,7 @@ AgentPhone lets AI agents make real phone calls to businesses. Your agent sends 
 clawhub install agentphone
 
 # Manual — download SKILL.md into your project
-curl -o .claude/skills/agentphone.md https://raw.githubusercontent.com/agentphone-app/skill/main/SKILL.md
+curl -o .claude/skills/agentphone.md https://agentphone.app/skills.md
 ```
 
 3. **Set your API key:**
