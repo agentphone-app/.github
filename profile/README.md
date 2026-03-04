@@ -7,9 +7,6 @@
 <h1 align="center">AgentPhone</h1>
 
 
-https://github.com/user-attachments/assets/3acc7ab2-e84d-46b9-89d8-abba43515c6d
-
-
 <p align="center">
   <strong>Phone calls for AI agents.</strong><br>
   Book reservations, cancel subscriptions, check claim status — with a single API call.
@@ -18,6 +15,10 @@ https://github.com/user-attachments/assets/3acc7ab2-e84d-46b9-89d8-abba43515c6d
 <p align="center">
   <a href="https://agentphone.app">Website</a> · <a href="https://agentphone.app/docs">API Docs</a> · <a href="https://github.com/agentphone-app/skill">OpenClaw Skill</a>
 </p>
+
+https://github.com/user-attachments/assets/3acc7ab2-e84d-46b9-89d8-abba43515c6d
+
+
 
 ---
 
