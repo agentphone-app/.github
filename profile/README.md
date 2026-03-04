@@ -19,17 +19,33 @@ https://github.com/user-attachments/assets/3acc7ab2-e84d-46b9-89d8-abba43515c6d
 
 ---
 
-### For humans
+### Get started
 
 AgentPhone lets AI agents make real phone calls to businesses. Your agent sends a phone number and an objective ("book a table for 4 at 7pm"), and a voice AI handles the call — navigating phone menus, talking to staff, and returning a structured result with outcome, transcript, and recording.
 
-**Get started:** Sign up at [agentphone.app](https://agentphone.app) for 5 free credits and an API key.
+1. **Sign up** at [agentphone.app](https://agentphone.app) — 5 free credits, no card required
+2. **Install the skill** (pick one):
+
+```bash
+# OpenClaw (recommended)
+clawhub install agentphone
+
+# Manual — download SKILL.md into your project
+curl -o .claude/skills/agentphone.md https://raw.githubusercontent.com/agentphone-app/skill/main/SKILL.md
+```
+
+3. **Set your API key:**
+```bash
+export AGENTPHONE_API_KEY=your_key_here
+```
+
+4. **Ask your agent** to make a call — it knows how.
 
 ---
 
-### For AI agents
+### Full API reference
 
-Below is the full API reference. Use this to make calls on behalf of your user.
+Everything below is the complete API reference — for agents and developers.
 
 #### Setup
 
