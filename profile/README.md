@@ -6,7 +6,6 @@
 
 <h1 align="center">AgentPhone</h1>
 
-
 <p align="center">
   <strong>Phone calls for AI agents.</strong><br>
   Book reservations, cancel subscriptions, check claim status — with a single API call.
@@ -18,15 +17,54 @@
 
 https://github.com/user-attachments/assets/3acc7ab2-e84d-46b9-89d8-abba43515c6d
 
+---
 
+### For humans
+
+AgentPhone lets AI agents make real phone calls to businesses. Your agent sends a phone number and an objective ("book a table for 4 at 7pm"), and a voice AI handles the call — navigating phone menus, talking to staff, and returning a structured result with outcome, transcript, and recording.
+
+**Get started:** Sign up at [agentphone.app](https://agentphone.app) for 5 free credits and an API key.
 
 ---
 
-### How it works
+### For AI agents
 
-1. Your agent sends a phone number + objective to the API
-2. A voice AI makes the call — navigates IVR menus, talks to humans
-3. You get back a structured outcome, transcript, and recording
+Below is the full API reference. Use this to make calls on behalf of your user.
+
+#### Setup
+
+- **Base URL:** `https://agentphone.app/api/v1`
+- **Auth:** `x-api-key: $AGENTPHONE_API_KEY` header
+- **Requires:** `curl`
+
+#### When to use phone calls
+
+Use AgentPhone when:
+- The business has no API, chat widget, or online form for the task
+- The task requires navigating a phone menu (IVR) or speaking to a human
+- You need a verbal confirmation, appointment, or cancellation
+- Online self-service is broken, gated behind login, or doesn't exist
+- The user explicitly asks you to call somewhere
+
+Do NOT use AgentPhone when:
+- The task can be completed via a website, API, or email
+- The phone number belongs to a private individual (not a business)
+- The objective is vague or not achievable via a single phone call
+- You don't have a specific phone number to call
+
+#### Writing good objectives
+
+Be specific. The objective is the literal instruction given to the voice agent on the call.
+
+| Bad | Good |
+|-----|------|
+| "Call the restaurant" | "Ask if there's a table for 4 tonight at 7pm. If yes, book under Sarah." |
+| "Cancel my subscription" | "Cancel Comcast internet for account 8834-2291. Get a confirmation number." |
+| "Check on my claim" | "Call about claim #CLM-44821. Ask for current status and expected resolution date." |
+
+Include any details the voice agent needs: account numbers, names, dates, confirmation IDs.
+
+#### Make a call
 
 ```bash
 curl -X POST https://agentphone.app/api/v1/calls \
@@ -35,8 +73,69 @@ curl -X POST https://agentphone.app/api/v1/calls \
   -d '{
     "to_phone_number": "+14155551234",
     "objective": "Book a table for 4 tonight at 7pm under the name Sarah",
-    "business_name": "Luigis Italian"
+    "business_name": "Luigis Italian",
+    "website": "https://luigis.com"
   }'
 ```
 
-**5 free credits on signup.** → [agentphone.app](https://agentphone.app)
+**Required fields:**
+- `to_phone_number` — E.164 format (e.g. +14155551234)
+- `objective` — what the voice agent should accomplish
+
+**Optional fields:**
+- `business_name` — name of the business (helps the voice agent)
+- `website` — URL to scrape for context before dialing
+
+**Response:**
+```json
+{
+  "data": { "call_id": "abc-123", "status": "queued" },
+  "credits_remaining": 4
+}
+```
+
+#### Poll for results
+
+Calls take 30–180 seconds. Poll every 8 seconds until status is terminal:
+
+```bash
+curl https://agentphone.app/api/v1/calls/abc-123 \
+  -H "x-api-key: $AGENTPHONE_API_KEY"
+```
+
+**Response when complete:**
+```json
+{
+  "data": {
+    "call_id": "abc-123",
+    "status": "completed",
+    "outcome": "achieved",
+    "summary": "Booked a table for 4 at 7pm tonight under Sarah. Confirmation #R-441.",
+    "transcript": "AI: Hi, I'd like to book a table...\nUser: Sure, for how many?...",
+    "duration_seconds": 94,
+    "recording_url": "https://..."
+  }
+}
+```
+
+**Terminal statuses:** `completed`, `failed`, `canceled`
+
+#### List recent calls
+
+```bash
+curl "https://agentphone.app/api/v1/calls?limit=10" \
+  -H "x-api-key: $AGENTPHONE_API_KEY"
+```
+
+#### Outcome values
+
+- `achieved` — objective completed successfully
+- `partial` — some progress, not fully resolved (check `summary`)
+- `not_achieved` — objective could not be completed
+
+#### Tips
+
+- Always poll until you get a terminal status
+- Pass `website` when available — the agent scrapes it for context before dialing
+- One credit = one call. Check `credits_remaining` in the POST response
+- Sign up at [agentphone.app](https://agentphone.app) for 5 free credits
