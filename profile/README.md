@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="https://agentphone.app/favicon.ico" width="64" alt="AgentPhone" />
+  <a href="https://agentphone.app">
+    <img src="https://raw.githubusercontent.com/agentphone-app/.github/main/profile/logo.svg" width="80" alt="AgentPhone" />
+  </a>
 </p>
 
 <h1 align="center">AgentPhone</h1>
